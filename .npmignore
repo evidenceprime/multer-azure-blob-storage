@@ -1,5 +1,9 @@
 tsconfig.json
-tslint.json
+.eslintrc
 lib/**/*js.map
 .vscode
+.idea
 src/
+.github
+node_modules
+yarn.lock

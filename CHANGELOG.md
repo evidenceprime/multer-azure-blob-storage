@@ -22,3 +22,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - Dependency updates
 - Remove pinning of dependency versions in favor of semantic versioning
+
+## 1.3.0
+
+- Migrated to `@azure/storage-blob` from `azure-storage`
+- Other dependencies updates
