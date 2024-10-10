@@ -1,6 +1,6 @@
 {
   "name": "@evidenceprime/multer-azure-blob-storage",
-  "version": "1.4.0-beta",
+  "version": "1.5.0",
   "description": "ES5/6 & Typescript friendly multer storage engine for Azure's blob storage.",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -43,8 +43,8 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@azure/storage-blob": "12.23.0-beta.1",
-    "express": "^4.18.2",
+    "@azure/storage-blob": "12.25.0",
+    "express": "4.21.1",
     "multer": "^1.4.5-lts.1",
     "path": "^0.12.7",
     "uuid": "^9.0.0"
