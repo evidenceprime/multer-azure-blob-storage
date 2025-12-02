@@ -1,6 +1,5 @@
 {
     "compilerOptions": {
-        "watch": false,
         "noImplicitAny": true,
         "target": "es5",
         // The 'commonjs' specification is needed in order to transpile
@@ -15,6 +14,7 @@
             "es2015",
             "dom"
         ],
+        "skipLibCheck": true,
         // Note, 'sourceMap' isn't a supported attribute in gulp, so it will be ignored
         // (aka, no-op) when this file is processed by gulp. 
         // Please see https://github.com/ivogabe/gulp-typescript for more context, which 
