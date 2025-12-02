@@ -6,28 +6,22 @@
 // *********************************************************
 
 // Node Modules
-import { v4 } from "uuid";
-import { extname } from "path";
-import { Request } from "express";
-import { StorageEngine } from "multer";
+import { v4 } from 'uuid';
+import { extname } from 'path';
+import { Request, Express } from 'express';
+import { StorageEngine } from 'multer';
 import {
   BlobGetPropertiesResponse,
   BlobServiceClient,
   PublicAccessType,
   StorageSharedKeyCredential,
-} from "@azure/storage-blob";
+} from '@azure/storage-blob';
 
 // Custom types
 export type MetadataObj = { [k: string]: string };
-export type MASNameResolver = (
-  req: Request,
-  file: Express.Multer.File
-) => Promise<string>;
-export type MASObjectResolver = (
-  req: Request,
-  file: Express.Multer.File
-) => Promise<MetadataObj>;
-export type ContainerAccessLevel = PublicAccessType | "off";
+export type MASNameResolver = (req: Request, file: Express.Multer.File) => Promise<string>;
+export type MASObjectResolver = (req: Request, file: Express.Multer.File) => Promise<MetadataObj>;
+export type ContainerAccessLevel = PublicAccessType | 'off';
 
 // Custom interfaces
 export interface IMASOptions {
@@ -61,16 +55,14 @@ export class MASError implements Error {
 
   constructor(message?: string) {
     this.errorList = [];
-    this.name = "Multer Azure Error";
+    this.name = 'Multer Azure Error';
     this.message = message ? message : null;
   }
 }
 
 export class MulterAzureStorage implements StorageEngine {
-  private readonly DEFAULT_UPLOAD_CONTAINER: string = "default-container";
-  private readonly DEFAULT_CONTAINER_ACCESS_LEVEL:
-    | PublicAccessType
-    | undefined = undefined;
+  private readonly DEFAULT_UPLOAD_CONTAINER: string = 'default-container';
+  private readonly DEFAULT_CONTAINER_ACCESS_LEVEL: PublicAccessType | undefined = undefined;
 
   private readonly _error: MASError;
   private readonly _blobService: BlobServiceClient;
@@ -87,68 +79,53 @@ export class MulterAzureStorage implements StorageEngine {
     this._error = new MASError();
     // Connection is preferred.
     options.connectionString =
-      options.connectionString ||
-      process.env.AZURE_STORAGE_CONNECTION_STRING ||
-      null;
+      options.connectionString || process.env.AZURE_STORAGE_CONNECTION_STRING || null;
     if (!options.connectionString) {
-      options.accessKey =
-        options.accessKey || process.env.AZURE_STORAGE_ACCESS_KEY || null;
-      options.accountName =
-        options.accountName || process.env.AZURE_STORAGE_ACCOUNT || null;
+      options.accessKey = options.accessKey || process.env.AZURE_STORAGE_ACCESS_KEY || null;
+      options.accountName = options.accountName || process.env.AZURE_STORAGE_ACCOUNT || null;
       // Access key is required if no connection string is provided
       if (!options.accessKey) {
         errorLength++;
         this._error.errorList.push(
-          new Error(
-            "Missing required parameter: Azure blob storage access key."
-          )
+          new Error('Missing required parameter: Azure blob storage access key.'),
         );
       }
       // Account name is required if no connection string is provided
       if (!options.accountName) {
         errorLength++;
         this._error.errorList.push(
-          new Error(
-            "Missing required parameter: Azure blob storage account name."
-          )
+          new Error('Missing required parameter: Azure blob storage account name.'),
         );
       }
     }
     // Container name is required
     if (!options.containerName) {
       errorLength++;
-      this._error.errorList.push(
-        new Error("Missing required parameter: Azure container name.")
-      );
+      this._error.errorList.push(new Error('Missing required parameter: Azure container name.'));
     }
     // Validate errors before proceeding
     if (errorLength > 0) {
-      const inflection: string[] = errorLength > 1 ? ["are", "s"] : ["is", ""];
+      const inflection: string[] = errorLength > 1 ? ['are', 's'] : ['is', ''];
       this._error.message = `There ${inflection[0]} ${errorLength} missing required parameter${inflection[1]}.`;
       throw this._error;
     }
     // Set proper container name
     switch (typeof options.containerName) {
-      case "string":
+      case 'string':
         this._containerName = this._promisifyStaticValue(options.containerName);
         break;
 
-      case "function":
+      case 'function':
         this._containerName = <MASNameResolver>options.containerName;
         break;
 
       default:
         // Catch for if container name is provided but not a desired type
-        this._containerName = this._promisifyStaticValue(
-          this.DEFAULT_UPLOAD_CONTAINER
-        );
+        this._containerName = this._promisifyStaticValue(this.DEFAULT_UPLOAD_CONTAINER);
         break;
     }
     // Set container access level
-    if (
-      !options.containerAccessLevel ||
-      options.containerAccessLevel === "off"
-    ) {
+    if (!options.containerAccessLevel || options.containerAccessLevel === 'off') {
       this._containerAccessLevel = this.DEFAULT_CONTAINER_ACCESS_LEVEL;
     } else {
       this._containerAccessLevel = options.containerAccessLevel;
@@ -158,13 +135,11 @@ export class MulterAzureStorage implements StorageEngine {
       this._metadata = null;
     } else {
       switch (typeof options.metadata) {
-        case "object":
-          this._metadata = this._promisifyStaticObj(
-            <MetadataObj>options.metadata
-          );
+        case 'object':
+          this._metadata = this._promisifyStaticObj(<MetadataObj>options.metadata);
           break;
 
-        case "function":
+        case 'function':
           this._metadata = <MASObjectResolver>options.metadata;
           break;
 
@@ -175,9 +150,7 @@ export class MulterAzureStorage implements StorageEngine {
       }
     }
     // Set proper blob name
-    this._blobName = options.blobName
-      ? options.blobName
-      : this._generateBlobName;
+    this._blobName = options.blobName ? options.blobName : this._generateBlobName;
     // Set buffer settings
     this._bufferSize = 1024 * 1024 * (options.bufferSizeInMB ?? 4);
     this._maxBufferCount = options.maxBufferCount ?? 20;
@@ -186,7 +159,7 @@ export class MulterAzureStorage implements StorageEngine {
       ? BlobServiceClient.fromConnectionString(options.connectionString)
       : new BlobServiceClient(
           `https://${options.accountName}.blob.core.windows.net`,
-          new StorageSharedKeyCredential(options.accountName, options.accessKey)
+          new StorageSharedKeyCredential(options.accountName, options.accessKey),
         );
   }
 
@@ -194,7 +167,7 @@ export class MulterAzureStorage implements StorageEngine {
     req: Request,
     file: Express.Multer.File,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    cb: (error?: any, info?: Partial<MulterOutFile>) => void
+    cb: (error?: any, info?: Partial<MulterOutFile>) => void,
   ) {
     // Ensure we have no errors during setup
     if (this._error.errorList.length > 0) {
@@ -208,10 +181,7 @@ export class MulterAzureStorage implements StorageEngine {
       const blobName: string = await this._blobName(req, file);
       const containerName: string = await this._containerName(req, file);
       // Create container if it doesn't exist
-      await this._createContainerIfNotExists(
-        containerName,
-        this._containerAccessLevel
-      );
+      await this._createContainerIfNotExists(containerName, this._containerAccessLevel);
       // Upload away
       await this._blobService
         .getContainerClient(containerName)
@@ -236,11 +206,7 @@ export class MulterAzureStorage implements StorageEngine {
     }
   }
 
-  async _removeFile(
-    req: Request,
-    file: MulterOutFile,
-    cb: (error: Error) => void
-  ) {
+  async _removeFile(req: Request, file: MulterOutFile, cb: (error: Error) => void) {
     // Ensure we have no errors during setup
     if (this._error.errorList.length > 0) {
       cb(this._error);
@@ -252,8 +218,7 @@ export class MulterAzureStorage implements StorageEngine {
       const containerName: string = await this._containerName(req, file);
       const exists = await this._doesContainerExists(containerName);
       if (!exists) {
-        this._error.message =
-          "Cannot use container. Check if provided options are correct.";
+        this._error.message = 'Cannot use container. Check if provided options are correct.';
         cb(this._error);
       } else {
         await this._deleteBlobIfExists(containerName, file.blobName);
@@ -272,22 +237,18 @@ export class MulterAzureStorage implements StorageEngine {
 
   private async _createContainerIfNotExists(
     name: string,
-    accessLevel?: PublicAccessType
+    accessLevel?: PublicAccessType,
   ): Promise<void> {
-    await this._blobService
-      .getContainerClient(name)
-      .createIfNotExists({ access: accessLevel });
+    await this._blobService.getContainerClient(name).createIfNotExists({ access: accessLevel });
   }
 
   private _getUrl(containerName: string, blobName: string): string {
-    return this._blobService
-      .getContainerClient(containerName)
-      .getBlobClient(blobName).url;
+    return this._blobService.getContainerClient(containerName).getBlobClient(blobName).url;
   }
 
   private async _getBlobProperties(
     containerName: string,
-    blobName: string
+    blobName: string,
   ): Promise<BlobGetPropertiesResponse> {
     return await this._blobService
       .getContainerClient(containerName)
@@ -295,23 +256,15 @@ export class MulterAzureStorage implements StorageEngine {
       .getProperties();
   }
 
-  private async _deleteBlobIfExists(
-    containerName: string,
-    blobName: string
-  ): Promise<void> {
+  private async _deleteBlobIfExists(containerName: string, blobName: string): Promise<void> {
     await this._blobService
       .getContainerClient(containerName)
       .getBlobClient(blobName)
       .deleteIfExists();
   }
 
-  private _generateBlobName(
-    _req: Request,
-    file: Express.Multer.File
-  ): Promise<string> {
-    return Promise.resolve(
-      `${Date.now()}-${v4()}${extname(file.originalname)}`
-    );
+  private _generateBlobName(_req: Request, file: Express.Multer.File): Promise<string> {
+    return Promise.resolve(`${Date.now()}-${v4()}${extname(file.originalname)}`);
   }
 
   private _promisifyStaticValue(value: string): MASNameResolver {

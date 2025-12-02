@@ -1,15 +1,17 @@
 {
   "name": "@evidenceprime/multer-azure-blob-storage",
-  "version": "2.0.1",
+  "version": "2.0.3",
   "description": "ES5/6 & Typescript friendly multer storage engine for Azure's blob storage.",
-  "main": "lib/index.js",
-  "typings": "lib/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "lint": "eslint src/",
-    "prettier": "prettier -w src/",
-    "prebuild": "npm run lint",
+    "check": "biome check ./src",
+    "check:fix": "biome check --write ./src",
+    "format": "biome format --write ./src",
+    "lint": "biome lint --write ./src",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "npm run build && npm publish"
   },
   "repository": {
     "type": "git",
@@ -31,22 +33,19 @@
   ],
   "author": "Bayo O, Evidence Prime",
   "license": "MIT",
-  "private": false,
   "devDependencies": {
-    "@types/multer": "^1.4.13",
-    "@types/node": "^20.2.5",
-    "@types/uuid": "^9.0.1",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
-    "eslint": "^8.41.0",
-    "prettier": "^2.8.8",
-    "typescript": "^5.0.4"
+    "@biomejs/biome": "1.9.4",
+    "@types/multer": "2.0.0",
+    "@types/node": "20.10.0",
+    "@types/uuid": "9.0.1",
+    "typescript": "5.9.3"
   },
   "dependencies": {
-    "@azure/storage-blob": "12.27.0",
-    "express": "4.21.2",
+    "@azure/storage-blob": "12.29.1",
+    "express": "4.22.1",
     "multer": "2.0.2",
-    "path": "^0.12.7",
-    "uuid": "^9.0.0"
-  }
+    "path": "0.12.7",
+    "uuid": "9.0.1"
+  },
+  "packageManager": "yarn@4.12.0"
 }
