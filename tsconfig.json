@@ -21,7 +21,7 @@
         // notes the issue as unsupported.
         "sourceMap": true,
         "baseUrl": "src",
-        "outDir": "./lib",
+        "outDir": "./dist",
         // Generate the typings (d.ts) file
         "declaration": true
     }
