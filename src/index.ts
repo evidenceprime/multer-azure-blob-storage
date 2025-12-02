@@ -1,1 +1,1 @@
-export * from "./MulterAzureStorage";
+export * from './MulterAzureStorage';
