@@ -21,11 +21,11 @@ import {
 export type MetadataObj = { [k: string]: string };
 export type MASNameResolver = (
   req: Request,
-  file: Express.Multer.File
+  file: Express.Multer.File,
 ) => Promise<string>;
 export type MASObjectResolver = (
   req: Request,
-  file: Express.Multer.File
+  file: Express.Multer.File,
 ) => Promise<MetadataObj>;
 export type ContainerAccessLevel = PublicAccessType | "off";
 
@@ -100,8 +100,8 @@ export class MulterAzureStorage implements StorageEngine {
         errorLength++;
         this._error.errorList.push(
           new Error(
-            "Missing required parameter: Azure blob storage access key."
-          )
+            "Missing required parameter: Azure blob storage access key.",
+          ),
         );
       }
       // Account name is required if no connection string is provided
@@ -109,8 +109,8 @@ export class MulterAzureStorage implements StorageEngine {
         errorLength++;
         this._error.errorList.push(
           new Error(
-            "Missing required parameter: Azure blob storage account name."
-          )
+            "Missing required parameter: Azure blob storage account name.",
+          ),
         );
       }
     }
@@ -118,7 +118,7 @@ export class MulterAzureStorage implements StorageEngine {
     if (!options.containerName) {
       errorLength++;
       this._error.errorList.push(
-        new Error("Missing required parameter: Azure container name.")
+        new Error("Missing required parameter: Azure container name."),
       );
     }
     // Validate errors before proceeding
@@ -140,7 +140,7 @@ export class MulterAzureStorage implements StorageEngine {
       default:
         // Catch for if container name is provided but not a desired type
         this._containerName = this._promisifyStaticValue(
-          this.DEFAULT_UPLOAD_CONTAINER
+          this.DEFAULT_UPLOAD_CONTAINER,
         );
         break;
     }
@@ -160,7 +160,7 @@ export class MulterAzureStorage implements StorageEngine {
       switch (typeof options.metadata) {
         case "object":
           this._metadata = this._promisifyStaticObj(
-            <MetadataObj>options.metadata
+            <MetadataObj>options.metadata,
           );
           break;
 
@@ -186,7 +186,10 @@ export class MulterAzureStorage implements StorageEngine {
       ? BlobServiceClient.fromConnectionString(options.connectionString)
       : new BlobServiceClient(
           `https://${options.accountName}.blob.core.windows.net`,
-          new StorageSharedKeyCredential(options.accountName, options.accessKey)
+          new StorageSharedKeyCredential(
+            options.accountName,
+            options.accessKey,
+          ),
         );
   }
 
@@ -194,7 +197,7 @@ export class MulterAzureStorage implements StorageEngine {
     req: Request,
     file: Express.Multer.File,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    cb: (error?: any, info?: Partial<MulterOutFile>) => void
+    cb: (error?: any, info?: Partial<MulterOutFile>) => void,
   ) {
     // Ensure we have no errors during setup
     if (this._error.errorList.length > 0) {
@@ -210,7 +213,7 @@ export class MulterAzureStorage implements StorageEngine {
       // Create container if it doesn't exist
       await this._createContainerIfNotExists(
         containerName,
-        this._containerAccessLevel
+        this._containerAccessLevel,
       );
       // Upload away
       await this._blobService
@@ -239,7 +242,7 @@ export class MulterAzureStorage implements StorageEngine {
   async _removeFile(
     req: Request,
     file: MulterOutFile,
-    cb: (error: Error) => void
+    cb: (error: Error) => void,
   ) {
     // Ensure we have no errors during setup
     if (this._error.errorList.length > 0) {
@@ -272,7 +275,7 @@ export class MulterAzureStorage implements StorageEngine {
 
   private async _createContainerIfNotExists(
     name: string,
-    accessLevel?: PublicAccessType
+    accessLevel?: PublicAccessType,
   ): Promise<void> {
     await this._blobService
       .getContainerClient(name)
@@ -287,7 +290,7 @@ export class MulterAzureStorage implements StorageEngine {
 
   private async _getBlobProperties(
     containerName: string,
-    blobName: string
+    blobName: string,
   ): Promise<BlobGetPropertiesResponse> {
     return await this._blobService
       .getContainerClient(containerName)
@@ -297,7 +300,7 @@ export class MulterAzureStorage implements StorageEngine {
 
   private async _deleteBlobIfExists(
     containerName: string,
-    blobName: string
+    blobName: string,
   ): Promise<void> {
     await this._blobService
       .getContainerClient(containerName)
@@ -307,10 +310,10 @@ export class MulterAzureStorage implements StorageEngine {
 
   private _generateBlobName(
     _req: Request,
-    file: Express.Multer.File
+    file: Express.Multer.File,
   ): Promise<string> {
     return Promise.resolve(
-      `${Date.now()}-${v4()}${extname(file.originalname)}`
+      `${Date.now()}-${v4()}${extname(file.originalname)}`,
     );
   }
 
