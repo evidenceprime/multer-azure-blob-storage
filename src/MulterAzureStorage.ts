@@ -5,17 +5,17 @@
 //
 // *********************************************************
 
-// Node Modules
-import { v4 } from 'uuid';
 import { extname } from 'path';
-import { Request, Express } from 'express';
-import { StorageEngine } from 'multer';
 import {
   BlobGetPropertiesResponse,
   BlobServiceClient,
   PublicAccessType,
   StorageSharedKeyCredential,
 } from '@azure/storage-blob';
+import { Express, Request } from 'express';
+import { StorageEngine } from 'multer';
+// Node Modules
+import { v4 } from 'uuid';
 
 // Custom types
 export type MetadataObj = { [k: string]: string };
