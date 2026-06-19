@@ -2,7 +2,7 @@
 # Manual changes might be lost - proceed with caution!
 
 __metadata:
-  version: 8
+  version: 10
   cacheKey: 10c0
 
 "@azure/abort-controller@npm:^2.0.0, @azure/abort-controller@npm:^2.1.2":
@@ -127,9 +127,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/storage-blob@npm:12.31.0":
-  version: 12.31.0
-  resolution: "@azure/storage-blob@npm:12.31.0"
+"@azure/storage-blob@npm:12.32.0":
+  version: 12.32.0
+  resolution: "@azure/storage-blob@npm:12.32.0"
   dependencies:
     "@azure/abort-controller": "npm:^2.1.2"
     "@azure/core-auth": "npm:^1.9.0"
@@ -142,16 +142,16 @@ __metadata:
     "@azure/core-util": "npm:^1.11.0"
     "@azure/core-xml": "npm:^1.4.5"
     "@azure/logger": "npm:^1.1.4"
-    "@azure/storage-common": "npm:^12.3.0"
+    "@azure/storage-common": "npm:^12.4.0"
     events: "npm:^3.0.0"
     tslib: "npm:^2.8.1"
-  checksum: 10c0/ed228de94a7a8d96a575eb8fac8e9b042ce2d4a272ad96204766d0c20618e8c4adf03eb30c50c4227d569b6a69e136a6450b2849ae1e4918b8db1c3773a9041d
+  checksum: 10c0/848a8de86cc85daeb6d4274753ff0afa3c61180935dc930a7adfe7113d01484d4c7e5b405f2ca7e2edc4bc652ab75dafce88fab7c05f72f2585379a4a0671ed7
   languageName: node
   linkType: hard
 
-"@azure/storage-common@npm:^12.3.0":
-  version: 12.3.0
-  resolution: "@azure/storage-common@npm:12.3.0"
+"@azure/storage-common@npm:^12.4.0":
+  version: 12.4.0
+  resolution: "@azure/storage-common@npm:12.4.0"
   dependencies:
     "@azure/abort-controller": "npm:^2.1.2"
     "@azure/core-auth": "npm:^1.9.0"
@@ -162,7 +162,7 @@ __metadata:
     "@azure/logger": "npm:^1.1.4"
     events: "npm:^3.3.0"
     tslib: "npm:^2.8.1"
-  checksum: 10c0/e2b40ed6e93041a82518467467bf1e31201a08a35eeeae44b5b26bd1085fb2199cdf2992682fcb1a503884b0e7b71236f8434b451664430c4620d94492a2f105
+  checksum: 10c0/28efd4f2e078cb9c6fd893ccb92eecce982b9ac078c0acafa347565781cb2bd24412b8c9d4beff1a4c0e4eac8d891e38565465321a347c77f05d3f084b0a4bf5
   languageName: node
   linkType: hard
 
@@ -261,13 +261,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@evidenceprime/multer-azure-blob-storage@workspace:."
   dependencies:
-    "@azure/storage-blob": "npm:12.31.0"
+    "@azure/storage-blob": "npm:12.32.0"
     "@biomejs/biome": "npm:1.9.4"
     "@types/multer": "npm:2.1.0"
     "@types/node": "npm:20.10.0"
     "@types/uuid": "npm:9.0.1"
-    express: "npm:4.22.1"
-    multer: "npm:2.1.1"
+    express: "npm:4.22.2"
+    multer: "npm:2.2.0"
     path: "npm:0.12.7"
     typescript: "npm:5.9.3"
     uuid: "npm:14.0.0"
@@ -453,9 +453,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"body-parser@npm:~1.20.3":
-  version: 1.20.4
-  resolution: "body-parser@npm:1.20.4"
+"body-parser@npm:~1.20.5":
+  version: 1.20.5
+  resolution: "body-parser@npm:1.20.5"
   dependencies:
     bytes: "npm:~3.1.2"
     content-type: "npm:~1.0.5"
@@ -465,11 +465,11 @@ __metadata:
     http-errors: "npm:~2.0.1"
     iconv-lite: "npm:~0.4.24"
     on-finished: "npm:~2.4.1"
-    qs: "npm:~6.14.0"
+    qs: "npm:~6.15.1"
     raw-body: "npm:~2.5.3"
     type-is: "npm:~1.6.18"
     unpipe: "npm:~1.0.0"
-  checksum: 10c0/569c1e896297d1fcd8f34026c8d0ab70b90d45343c15c5d8dff5de2bad08125fc1e2f8c2f3f4c1ac6c0caaad115218202594d37dcb8d89d9b5dcae1c2b736aa9
+  checksum: 10c0/ad777ca5e4711eae253c93f50fdc4608c60b76a9710d79e5e5b84581c76691e6ad21ecc9158986d9ea2b365df73e403ca33c27a8bccc1a7cfc2ccc248548118d
   languageName: node
   linkType: hard
 
@@ -669,13 +669,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express@npm:4.22.1":
-  version: 4.22.1
-  resolution: "express@npm:4.22.1"
+"express@npm:4.22.2":
+  version: 4.22.2
+  resolution: "express@npm:4.22.2"
   dependencies:
     accepts: "npm:~1.3.8"
     array-flatten: "npm:1.1.1"
-    body-parser: "npm:~1.20.3"
+    body-parser: "npm:~1.20.5"
     content-disposition: "npm:~0.5.4"
     content-type: "npm:~1.0.4"
     cookie: "npm:~0.7.1"
@@ -694,7 +694,7 @@ __metadata:
     parseurl: "npm:~1.3.3"
     path-to-regexp: "npm:~0.1.12"
     proxy-addr: "npm:~2.0.7"
-    qs: "npm:~6.14.0"
+    qs: "npm:~6.15.1"
     range-parser: "npm:~1.2.1"
     safe-buffer: "npm:5.2.1"
     send: "npm:~0.19.0"
@@ -704,7 +704,7 @@ __metadata:
     type-is: "npm:~1.6.18"
     utils-merge: "npm:1.0.1"
     vary: "npm:~1.1.2"
-  checksum: 10c0/ea57f512ab1e05e26b53a14fd432f65a10ec735ece342b37d0b63a7bcb8d337ffbb830ecb8ca15bcdfe423fbff88cea09786277baff200e8cde3ab40faa665cd
+  checksum: 10c0/d06dd4379fd217440b30f8abbe45f0e74931114c1395034f03e7d635196ecdab530d4835a1962a6aa34838d61967dc6f1f77846999bba3032373e9e714222c44
   languageName: node
   linkType: hard
 
@@ -973,15 +973,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"multer@npm:2.1.1":
-  version: 2.1.1
-  resolution: "multer@npm:2.1.1"
+"multer@npm:2.2.0":
+  version: 2.2.0
+  resolution: "multer@npm:2.2.0"
   dependencies:
     append-field: "npm:^1.0.0"
     busboy: "npm:^1.6.0"
     concat-stream: "npm:^2.0.0"
     type-is: "npm:^1.6.18"
-  checksum: 10c0/2ec4e02833b20f403cfb879d4b64d2a9070d902b9deae7aef18a6faadb707d7665385456cf540aa8a6dadfe3d4c5fc8e0e7b0675b94e1077048b1125426deee6
+  checksum: 10c0/7aa366d89042427347b6ab8e4a203405d7fe942e4a3095648a14526fcf3691d98ffc2da62abf85d8aca0a341f828168eb197b33cfdcfcce29d6ef593a5625591
   languageName: node
   linkType: hard
 
@@ -1056,7 +1056,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:~6.14.0":
+"qs@npm:~6.15.1":
   version: 6.15.2
   resolution: "qs@npm:6.15.2"
   dependencies:
